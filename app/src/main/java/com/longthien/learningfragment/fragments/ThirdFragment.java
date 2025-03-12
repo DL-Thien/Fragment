@@ -26,15 +26,15 @@ public class ThirdFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onDataPassListener = (OnDataPassListener) getActivity();
-        assert getActivity() != null;
-        CardView cardViewThird = getActivity().findViewById(R.id.cardViewThird);
-        cardViewThird.setOnClickListener(v -> onDataPassListener.onDataPass("Third Fragment"));
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        onDataPassListener = null;
+    public void registerReceiveDataFromThirdFragment(OnDataPassListener onDataPassListener) {
+        this.onDataPassListener = onDataPassListener;
+    }
+
+    public void sendData() {
+        if (onDataPassListener != null) {
+            onDataPassListener.onDataPass("Third Fragment");
+        }
     }
 }

@@ -26,17 +26,16 @@ public class SecondFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onDataPassListener = (OnDataPassListener) getActivity();
-        assert getActivity() != null;
-        CardView cardViewSecond = getActivity().findViewById(R.id.cardViewSecond);
-        cardViewSecond.setOnClickListener(v -> {
-            onDataPassListener.onDataPass("Second Fragment");
-        });
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        onDataPassListener = null;
+    public void registerReceiveDataFromSecondFragment(OnDataPassListener onDataPassListener) {
+        this.onDataPassListener = onDataPassListener;
     }
+
+    public void sendData() {
+        if (onDataPassListener != null) {
+            onDataPassListener.onDataPass("Second Fragment");
+        }
+    }
+
 }

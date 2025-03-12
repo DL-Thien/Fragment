@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.longthien.learningfragment.OnDataPassListener;
@@ -27,22 +26,15 @@ public class FirstFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onDataPassListener = (OnDataPassListener) getActivity();
-//        assert getActivity() != null;
-//        CardView cardViewFirst = getActivity().findViewById(R.id.cardViewFirst);
-//        cardViewFirst.setOnClickListener(v -> {
-//            onDataPassListener.onDataPass("First Fragment");
-//        });
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        onDataPassListener = null;
-    }
     public void sendData() {
         if (onDataPassListener != null) {
             onDataPassListener.onDataPass("First Fragment");
         }
+    }
+
+    public void registerReceiveDataFromFirstFragment(OnDataPassListener onDataPassListener) {
+        this.onDataPassListener = onDataPassListener;
     }
 }

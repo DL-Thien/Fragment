@@ -9,6 +9,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.longthien.learningfragment.fragments.FirstFragment;
 import com.longthien.learningfragment.fragments.FourFragment;
@@ -42,36 +44,35 @@ public class MainActivity extends AppCompatActivity implements OnDataPassListene
 
         cardViewFirst.setOnClickListener(v -> {
             firstFragment = (FirstFragment) getSupportFragmentManager().findFragmentById(R.id.container_fragment_first);
-            if (firstFragment != null) firstFragment.sendData();
+            if (firstFragment != null) {
+                firstFragment.registerReceiveDataFromFirstFragment(this);
+                firstFragment.sendData();
+            }
         });
 
-//        Bundle argActivity = new Bundle();
-//        argActivity.putString("Bundle", "From Activity");
+        cardViewSecond.setOnClickListener(v -> {
+            secondFragment = (SecondFragment) getSupportFragmentManager().findFragmentById(R.id.container_fragment_second);
+            if (secondFragment != null) {
+                secondFragment.registerReceiveDataFromSecondFragment(this);
+                secondFragment.sendData();
+            }
+        });
 
-//        getSupportFragmentManager().beginTransaction()
-//                .setReorderingAllowed(true)
-//                .add(R.id.fragment_container_view, ExampleFragment.class, argActivity)
-//                .commit();
-    }
+        cardViewThird.setOnClickListener(v -> {
+            thirdFragment = (ThirdFragment) getSupportFragmentManager().findFragmentById(R.id.container_fragment_third);
+            if (thirdFragment != null) {
+                thirdFragment.registerReceiveDataFromThirdFragment(this);
+                thirdFragment.sendData();
+            }
+        });
 
-    private void bindingView() {
-        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true)
-                .replace(R.id.container_fragment_first, FirstFragment.class, null).commit();
-
-        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true)
-                .replace(R.id.container_fragment_second, SecondFragment.class, null).commit();
-
-        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true)
-                .replace(R.id.container_fragment_third, ThirdFragment.class, null).commit();
-
-        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true)
-                .replace(R.id.container_fragment_four, FourFragment.class, null).commit();
-
-        cardViewFirst = findViewById(R.id.cardViewFirst);
-        cardViewSecond = findViewById(R.id.cardViewSecond);
-        cardViewThird = findViewById(R.id.cardViewThird);
-        cardViewFour = findViewById(R.id.cardViewFour);
-        tvFragmentName = findViewById(R.id.tvFragmentName);
+        cardViewFour.setOnClickListener(v -> {
+            fourFragment = (FourFragment) getSupportFragmentManager().findFragmentById(R.id.container_fragment_four);
+            if (fourFragment != null) {
+                fourFragment.registerReceiveDataFromFourFragment(this);
+                fourFragment.sendData();
+            }
+        });
     }
 
     @Override
@@ -80,5 +81,24 @@ public class MainActivity extends AppCompatActivity implements OnDataPassListene
             return;
         }
         tvFragmentName.setText(fragmentName);
+    }
+
+    private void bindingView() {
+
+        cardViewFirst = findViewById(R.id.cardViewFirst);
+        cardViewSecond = findViewById(R.id.cardViewSecond);
+        cardViewThird = findViewById(R.id.cardViewThird);
+        cardViewFour = findViewById(R.id.cardViewFour);
+        tvFragmentName = findViewById(R.id.tvFragmentName);
+        initFragmentView(R.id.container_fragment_first, new FirstFragment(), "First Fragment");
+        initFragmentView(R.id.container_fragment_second, new SecondFragment(), "Second Fragment");
+        initFragmentView(R.id.container_fragment_third, new ThirdFragment(), "Third Fragment");
+        initFragmentView(R.id.container_fragment_four, new FourFragment(), "Four Fragment");
+
+    }
+
+    private void initFragmentView(int id, Fragment fragment, String fragmentName) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().setReorderingAllowed(true).add(id, fragment, fragmentName).commit();
     }
 }
